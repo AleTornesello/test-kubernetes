@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  buid_and_push_to_registry:
+  buid_and_deploy:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -31,18 +31,14 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy:
-    name: Deploy to cluster
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Deploy to cluster
-      uses: nickgronow/kubectl@master
-      with:
-        config_data: ${{ secrets.KUBE_CONFIG }}
-        args: set image deployment/test container=iregon/test-kube:master --record
-    - name: Verify deployment
-      uses: nickgronow/kubectl@master
-      with:
-        config_data: ${{ secrets.KUBE_CONFIG }}
-        args: '"rollout status deployment/test"'
+
+      - name: Deploy to cluster
+        uses: nickgronow/kubectl@master
+        with:
+          config_data: ${{ secrets.KUBE_CONFIG }}
+          args: set image deployment/test test=iregon/test-kube:master --record
+      - name: Verify deployment
+        uses: nickgronow/kubectl@master
+        with:
+          config_data: ${{ secrets.KUBE_CONFIG }}
+          args: '"rollout status deployment/test"'
