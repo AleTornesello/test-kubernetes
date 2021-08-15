@@ -8,6 +8,8 @@ jobs:
   buid_and_deploy:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    env:
+      SHA8: ${GITHUB_SHA::8}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -29,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${GITHUB_SHA::8}
+          tags: $SHA8
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy to cluster
