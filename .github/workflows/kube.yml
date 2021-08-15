@@ -40,4 +40,4 @@ jobs:
         uses: nickgronow/kubectl@master
         with:
           config_data: ${{ secrets.KUBE_CONFIG }}
-          args: set image deployment/test test=iregon/test-kube:master --record
+          args: set image deployment/test test=iregon/test-kube:${{ steps.slug.outputs.sha8 }} --record
