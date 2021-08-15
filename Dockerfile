@@ -11,4 +11,6 @@ RUN npm install --production
 
 COPY . .
 
+EXPOSE 80/udp
+
 CMD [ "node", "app.js" ]
