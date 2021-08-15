@@ -40,9 +40,9 @@ jobs:
       uses: nickgronow/kubectl@master
       with:
         config_data: ${{ secrets.KUBE_CONFIG }}
-        args: set image --record deployment/test test=iregon/test-kube:master
+        args: set image deployment/test container=iregon/test-kube:master --record
     - name: Verify deployment
       uses: nickgronow/kubectl@master
       with:
         config_data: ${{ secrets.KUBE_CONFIG }}
-        args: '"rollout status deployment/<my-deploy>"'
+        args: '"rollout status deployment/test"'
