@@ -24,16 +24,12 @@ jobs:
         with:
           images: iregon/test-kube
       
-      - name: Get short SHA
-        id: slug
-        run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-      
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: ${{ steps.slug.outputs.sha8 }}
+          tags: iregon/test-kube:${GITHUB_SHA::8}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy to cluster
